@@ -24,6 +24,8 @@ class MainActivity : AppCompatActivity() {
                 .setTextBackgroundColor(ContextCompat.getColor(this, android.R.color.white))
                 .setTextColor(ContextCompat.getColor(this, android.R.color.holo_red_dark))
                 .setResourceId(R.drawable.giphy5)
+                .setWidth(100)
+                .setHeight(100)
                 .showDialog("1")
 
         dialog?.setResourceId(R.drawable.giphy6)

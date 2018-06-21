@@ -2,6 +2,8 @@ package com.hussain_chachuliya.gifdialog
 
 import android.app.Dialog
 import android.content.Context
+import android.graphics.drawable.BitmapDrawable
+import android.support.constraint.ConstraintLayout
 import android.support.v4.content.ContextCompat
 import android.util.TypedValue
 import android.view.View
@@ -26,6 +28,8 @@ class GifDialog private constructor(private var ctx: Context) {
     private var dialogBackgroundResource: Int
     private var isCancelable: Boolean
     private var dimAmount: Float
+    private var width: Int
+    private var height: Int
 
     init {
         this.text = ""
@@ -34,6 +38,8 @@ class GifDialog private constructor(private var ctx: Context) {
         this.textBackgroundColor = ContextCompat.getColor(ctx, android.R.color.black)
         this.dialogBackgroundResource = android.R.color.transparent
         this.textSize = 12
+        this.width = 0
+        this.height = 0
         dimAmount = 0.5f
         map = HashMap()
     }
@@ -44,6 +50,16 @@ class GifDialog private constructor(private var ctx: Context) {
                 Fresco.initialize(context)
             return GifDialog(context)
         }
+    }
+
+    fun setWidth(value: Int): GifDialog {
+        width = value
+        return this
+    }
+
+    fun setHeight(value: Int): GifDialog {
+        height = value
+        return this
     }
 
     fun setResourceId(id: Int): GifDialog {
@@ -115,6 +131,16 @@ class GifDialog private constructor(private var ctx: Context) {
 
 
         val draweeView = mDialog?.findViewById<SimpleDraweeView>(R.id.draweeView)
+
+        // Setting height and width according to the drawable
+        val bd = ContextCompat.getDrawable(ctx, resourceId!!) as BitmapDrawable
+        val imageHeight = bd.bitmap.height.toFloat()
+        val imageWidth = bd.bitmap.width.toFloat()
+        draweeView?.aspectRatio = imageWidth / imageHeight
+        draweeView?.layoutParams = ConstraintLayout.LayoutParams(
+                if (width == 0) imageWidth.toInt() else width,
+                if (height == 0) 0 else height)
+
         val controller: DraweeController = Fresco.newDraweeControllerBuilder()
                 .setUri(UriUtil.getUriForResourceId(resourceId!!))
                 .setAutoPlayAnimations(true)
