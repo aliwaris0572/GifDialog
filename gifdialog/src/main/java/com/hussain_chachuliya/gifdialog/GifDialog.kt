@@ -37,6 +37,8 @@ class GifDialog private constructor(private var ctx: Context) {
 
     companion object {
         fun with(context: Context): GifDialog {
+            if (!Fresco.hasBeenInitialized())
+                Fresco.initialize(context)
             return GifDialog(context)
         }
     }
@@ -72,9 +74,13 @@ class GifDialog private constructor(private var ctx: Context) {
     }
 
     fun showDialog(tag: String) {
-        if (!Fresco.hasBeenInitialized())
-            Fresco.initialize(ctx)
+        // Remove redundant dialogs
+        if (map?.containsKey(tag) != null){
+            map?.get(tag)?.dismiss()
+            map?.remove(tag)
+        }
 
+        // Create a new dialog
         mDialog = Dialog(ctx)
         mDialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
         mDialog?.setContentView(R.layout.custom)
