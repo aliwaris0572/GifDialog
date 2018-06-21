@@ -2,7 +2,6 @@ package com.hussain_chachuliya.gifdialog
 
 import android.app.Dialog
 import android.content.Context
-import android.content.SharedPreferences
 import android.support.v4.content.ContextCompat
 import android.util.TypedValue
 import android.view.View
@@ -24,14 +23,18 @@ class GifDialog private constructor(private var ctx: Context) {
     private var textColor: Int
     private var textSize: Int
     private var textBackgroundColor: Int
+    private var dialogBackgroundResource: Int
     private var isCancelable: Boolean
+    private var dimAmount: Float
 
     init {
         this.text = ""
         this.isCancelable = true
         this.textColor = ContextCompat.getColor(ctx, android.R.color.white)
         this.textBackgroundColor = ContextCompat.getColor(ctx, android.R.color.black)
+        this.dialogBackgroundResource = android.R.color.transparent
         this.textSize = 12
+        dimAmount = 0.5f
         map = HashMap()
     }
 
@@ -73,6 +76,16 @@ class GifDialog private constructor(private var ctx: Context) {
         return this
     }
 
+    fun setDimAmount(value: Float): GifDialog {
+        dimAmount = value
+        return this
+    }
+
+    fun setDialogBackgroundResource(id: Int): GifDialog {
+        dialogBackgroundResource = id
+        return this
+    }
+
     fun showDialog(tag: String) {
         // Remove redundant dialogs
         if (map?.containsKey(tag) != null){
@@ -84,8 +97,8 @@ class GifDialog private constructor(private var ctx: Context) {
         mDialog = Dialog(ctx)
         mDialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
         mDialog?.setContentView(R.layout.custom)
-        mDialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        mDialog?.window?.setDimAmount(0f)
+        mDialog?.window?.setBackgroundDrawableResource(dialogBackgroundResource)
+        mDialog?.window?.setDimAmount(dimAmount)
         mDialog?.setCancelable(isCancelable)
 
         // set the custom dialog components - text, image and button
