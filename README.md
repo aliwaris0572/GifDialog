@@ -2,6 +2,7 @@
 # GifDialog
  
 [![](https://jitpack.io/v/aliwaris0572/GifDialog.svg)](https://jitpack.io/#aliwaris0572/GifDialog)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-GifDialog-red.svg?style=flat)](https://android-arsenal.com/details/1/7003)
 
 ## Custom loading dialog library in Kotlin
 This library aims to help in creating beautiful loading dialogs with animated gifs.
